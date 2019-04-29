@@ -1,0 +1,30 @@
+<ion-content>
+    <form [formGroup]="contactForm" (submit)="AddContact()">
+  <ion-item>
+  <ion-label>Name</ion-label>
+  <ion-input type="text" formControlName="name" id="name" ></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label>Phone no</ion-label>
+  <ion-input formControlName="phone" id="phone" ></ion-input>
+</ion-item>
+<ion-item>
+  <ion-button shape="round" type="submit" [disabled]="!contactForm.valid">Add Contact</ion-button>
+</ion-item>
+</form>
+</ion-content>
+<ion-content>
+  <ion-list>
+
+        <ion-item *ngFor="let contact of contacts; let i = index">
+            <ion-label>{{contact.name}}</ion-label>
+            <ion-label>{{contact.phone}}</ion-label>
+           <!-- <ion-label (click)=deleteContact(contact.ID)><ion-icon name="trash"></ion-icon></ion-label> --> 
+          </ion-item>
+    
+      
+  </ion-list>
+</ion-content>
+  
+
+
