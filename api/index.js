@@ -33,6 +33,9 @@ app.get('/contact', async (req, res, next) => {
     next(err);
   }
 });
+app.delete('/contact', async (req, res, next) => {
+  res.send('Delete called');
+});
 
 // Add Contact 
 // Prams  name varchar(50)

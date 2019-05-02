@@ -28,7 +28,7 @@ export class ApiServiceService {
   // Send Sms Or Call 
 
   itsEmargency(){
-    return this.http.get(this.apiUrl+'/contact').subscribe((res)=>{
+    return this.http.get<any[]>(this.apiUrl+'/contact').subscribe((res)=>{
       res.forEach(element => {
         // Call SMS API 
         alert('SMS SENT TO '+element.phone);
