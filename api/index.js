@@ -1,5 +1,5 @@
 var express = require('express'); 
-var Promise = require('Promise'); 
+var Promise = require('./lib/promise'); 
 var sqlite = require('sqlite'); 
 var bodyParser  =  require("body-parser");
 
@@ -11,11 +11,11 @@ app.use(bodyParser.json());
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+    res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE");
     next();
   });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const dbPromise = Promise.resolve()
   .then(() => sqlite.open('./database.sqlite', { Promise }))
   .then(db => db.migrate({ force: 'last' }));
@@ -33,9 +33,27 @@ app.get('/contact', async (req, res, next) => {
     next(err);
   }
 });
-app.delete('/contact', async (req, res, next) => {
-  res.send('Delete called');
-});
+  // Delete
+  app.delete('/contact/:id', async (req, res, next) => {
+    var id = req.params.id; 
+
+    try {
+      const db = await dbPromise;
+      const [contact] = await Promise.all([
+        db.run(`DELETE FROM contact where id='${id}'`, function(err) {
+            if (err) {
+              return console.log(err.error);
+            }
+            // get the last insert id
+            console.log(`A row has been inserted with rowid ${this.lastID}`);
+          }),
+
+      ]);
+      res.send(contact);
+    } catch (err) {
+      next(err);
+    }
+  });
 
 // Add Contact 
 // Prams  name varchar(50)
@@ -62,6 +80,7 @@ app.post('/contact', async (req, res, next) => {
       next(err);
     }
   });
+
 
  
 app.listen(port);
