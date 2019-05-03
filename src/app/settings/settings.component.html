@@ -19,7 +19,7 @@
         <ion-item *ngFor="let contact of contacts; let i = index">
             <ion-label>{{contact.name}}</ion-label>
             <ion-label>{{contact.phone}}</ion-label>
-           <!-- <ion-label (click)=deleteContact(contact.ID)><ion-icon name="trash"></ion-icon></ion-label> --> 
+            <ion-label (click)=deleteContact(contact.ID)><ion-icon name="trash"></ion-icon></ion-label>
           </ion-item>
     
       
